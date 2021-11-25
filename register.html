@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+<div class="container register">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+            <h3>Welcome</h3>
+            <input type="submit" name="" value="Login" onclick="window.location.href='login.html'"><br/>
+        </div>
+        <div class="col-md-9 register-right">
+            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+            <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Student</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Teacher</a>
+            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <h3 class="register-heading">Register as Student</h3>
+                                <div class="row register-form">
+                                    <div>
+                                        <div class="form-group tab">
+                                            <input type="text" class="form-control" id="teacherID2" placeholder="Teacher's ID *" value="" required/>
+                                        </div>
+                                        <div class="form-group tab">
+                                            <input type="password" class="form-control" id="studentPass" placeholder="Password *" required/>
+                                        </div>   
+                                        <div class="form-group tab">
+                                            <input type="text" class="form-control" id="studentRoll" placeholder="Student Roll No *" value="" required/>
+                                        </div>
+                                        <div class="form-group tab">
+                                            <input type="file"  id="customFile" required/>
+                                        </div>
+                                        <div class="form-group tab">
+                                            <input type="text" class="form-control" id="studentName" placeholder="Student's Name *" value="" required/>
+                                        </div>
+                                        <div class="form-group tab">
+                                            <input type="email" class="form-control" id="studentEmail" placeholder="Email ID *" value="" required/>
+                                        </div>
+                                        <input type="submit" class="btnRegister" id="stdRegister" value="Register" required/>
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <h3  class="register-heading">Register as Teacher</h3>
+                                <div class="row register-form">
+                                    <div>
+                                        <div class="form-group tab">
+                                            <input type="text" class="form-control" id="teacherID" placeholder="Teacher's ID *" value="" required/>
+                                        </div>
+                                        <div class="form-group tab">
+                                            <input type="password" class="form-control" id="teacherPass" placeholder="Password *" required/>
+                                        </div>   
+                                        <div class="form-group tab">
+                                            <input type="email" class="form-control" id="teacherEmail" placeholder="Email ID *" value="" required/>
+                                        </div>
+                                        <div class="form-group tab">
+                                            <input type="number" class="form-control" id="teacherNumber" placeholder="Phone Number *" value="" required/>
+                                        </div>
+                                        <div class="form-group tab">
+                                            <input type="text" class="form-control" id="teacherName" placeholder="Teacher's Name *" value="" required/>
+                                        </div>
+                                        <input type="submit" class="btnRegister" id="insBtn" value="Register" required/>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            
+            <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyCpNWFdBwjX3w0ce9R1YaUoF25bFGED8Nw",
+          authDomain: "smart-attendance-system-70f06.firebaseapp.com",
+          projectId: "smart-attendance-system-70f06",
+          storageBucket: "smart-attendance-system-70f06.appspot.com",
+          messagingSenderId: "1036896012351",
+          appId: "1:1036896012351:web:7b1a5a6d7c1528a5c1d08a",
+          measurementId: "G-NBE0DJ4WKP"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+              
+              import {getDatabase,set,child,update,remove,ref} from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+            //   import { getStorage } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-storage.js";
+              import { getStorage, uploadBytes } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-storage.js";
+      
+              const db = getDatabase();
+
+              // Teacher's credentials
+              var teacherID = document.getElementById("teacherID");
+              var teacherPass = document.getElementById("teacherPass");
+              var teacherEmail = document.getElementById("teacherEmail");
+              var teacherNumber = document.getElementById("teacherNumber");
+              var teacherName = document.getElementById("teacherName");
+              
+              //Student's credentials
+              var teacherID2 = document.getElementById("teacherID2");
+              var studentPass = document.getElementById("studentPass");
+              var studentEmail = document.getElementById("studentEmail");
+              var studentRoll = document.getElementById("studentRoll");
+              var customFile = document.getElementById("customFile");
+              var studentName = document.getElementById("studentName");
+              var studentImage = document.getElementById("customFile").files[0];
+              const imagesRef = ref(db, studentImage);
+      
+
+              function TeacherData(){
+                  // const image = document.querySelector("#fileField").files[0];
+                
+                  set(ref(db,"TEACHER/"+teacherID.value),{
+
+                    Teacher_Name : teacherName.value,
+                    Teacher_ID : teacherID.value,
+                    Teacher_Pass : teacherPass.value,
+                    Teacher_Email : teacherEmail.value,
+                    Teacher_Number : teacherNumber.value
+
+                  })
+                  .then(()=>{
+                      alert(" Teacher Data stored succesfully");
+                  })
+                  .catch((error)=>{
+                      alert(error);
+                  });
+      
+                  // Create a reference to name
+                  // console.log(image)
+                  // const imageRef = ref(storage, image);
+                  // const filesRef = ref(storage, 'images/mountains.jpg');
+              }
+              insBtn.addEventListener('click',TeacherData);
+              
+               function studentData(){
+      
+                    // const image = document.querySelector("#fileField").files[0];
+
+                    set(ref(db,"TEACHER/"+teacherID2.value+"/STUDENT/"+studentRoll.value),{
+
+                    Student_Name : studentName.value,
+                    Teacher_ID : teacherID2.value,
+                    Student_Pass : studentPass.value,
+                    Student_Email : studentEmail.value,
+                    Student_Roll : studentRoll.value,
+                    Image : customFile.value
+
+                    })
+                    .then(()=>{
+                        alert("Student Data stored succesfully");
+                    })
+                    .catch((error)=>{
+                        alert(error);
+                    });
+
+                // Storage
+                // uploadBytes(ImagesRef, studentImage).then((snapshot) => {
+                //     console.log('Uploaded a blob or file!');
+                // });
+                
+            }
+            stdRegister.addEventListener('click',studentData);
+
+            </script>
+            <script>
+                const firebaseCong = {
+                    apiKey: "AIzaSyCpNWFdBwjX3w0ce9R1YaUoF25bFGED8Nw",
+                    authDomain: "smart-attendance-system-70f06.firebaseapp.com",
+                    databaseURL: "https://smart-attendance-system-70f06-default-rtdb.firebaseio.com",
+                    projectId: "smart-attendance-system-70f06",
+                    storageBucket: "smart-attendance-system-70f06.appspot.com",
+                    messagingSenderId: "1036896012351",
+                    appId: "1:1036896012351:web:7b1a5a6d7c1528a5c1d08a",
+                    measurementId: "G-NBE0DJ4WKP"
+                  };
+                
+                  firebase.initializeApp(firebaseCong);
+                  console.log(firebase);
+
+                  const auth =  firebase.auth();
+                  //Sign-up fucntion for teacher
+                  function signUpTeacher(){
+                    var teacherPass = document.getElementById("teacherPass");
+                    var teacherEmail = document.getElementById("teacherEmail");
+
+                    const promise = auth.createUserWithEmailAndPassword(teacherEmail.value,teacherPass.value);
+                    //
+                    promise.catch(e=>alert(e.message));
+                    alert("SignUp Successfully");
+                }
+
+                //Sign-up fucntion for student
+                function signUpStudent(){
+                    var studentPass = document.getElementById("studentPass");
+                    var studentEmail = document.getElementById("studentEmail");
+
+                    const promise = auth.createUserWithEmailAndPassword(studentEmail.value,studentPass.value);
+                    //
+                    promise.catch(e=>alert(e.message));
+                    alert("SignUp Successfully");
+                }
+
+                // Image file configuration
+                function uploadImage(){
+
+                     const ref = firebase.storage().ref()
+                     var studentName = document.getElementById("studentName");
+
+                     const file = document.getElementById("customFile").files[0]
+                      const name = studentName.value + '-' + file.name
+
+                      const metadata = {
+                        contentType:file.type
+                      }
+                      const task = ref.child(name).put(file,metadata)
+
+                      task
+                      .then(snapshot => snapshot.ref.getDownloadURL())
+                      .then(url => {
+                          console.log(url)
+                          alert("Image Uploaded")
+                      })
+                  }
+                  
+                  stdRegister.addEventListener('click',uploadImage);
+                  stdRegister.addEventListener('click',signUpStudent);
+                  insBtn.addEventListener('click',signUpTeacher);
+            </script>
+</body>
+</html>
